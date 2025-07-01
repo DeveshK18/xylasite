@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>xyla.</title>
+    <link rel="icon" type="image/png" href="assets/XylaLogo.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -353,6 +354,20 @@
             word-break: break-word;
         }
 
+        .benefits-summary {
+            font-size: 1.8rem;
+            font-weight: 400;
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 3rem;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 1.5rem;
+            will-change: opacity, transform;
+        }
+
         /* Team Section */
         .team-section {
             position: fixed;
@@ -480,6 +495,24 @@
             background-color: #f0f0f0;
         }
 
+        .email-button {
+            padding: 1rem 1.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: black;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .email-button:hover {
+            background-color: #f0f0f0;
+        }
+
         .contact-text {
             font-size: 1.2rem;
             margin-top: 3rem;
@@ -488,10 +521,20 @@
         .contact-text a {
             color: black;
             text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
         }
 
         .contact-text a:hover {
-            text-decoration: underline;
+            background-color: #f0f0f0;
+            text-decoration: none;
         }
 
         .contact-button {
@@ -729,6 +772,7 @@
             <p class="benefit-item">Soil</p>
             <p class="benefit-item">Water hookups</p>
         </div>
+        <p class="benefits-summary">In a nutshell: deploy anywhere, no external infrastructure needed, in just 10 minutes.</p>
     </div>
 
     <!-- Team Section -->
@@ -774,13 +818,12 @@
             <div class="pre-order-section">
                 <p class="pre-order-text">we're now taking pre-orders. drop your email → we'll reach out.</p>
                 
-                <form class="email-form" id="emailForm" action="https://formsubmit.co/dkhilnani@gmail.com" method="POST">
-                    <input type="email" name="email" id="emailInput" placeholder="your email" required>
-                    <button type="submit">→</button>
-                </form>
+                <div class="email-form" id="emailForm">
+                    <button type="button" class="email-button" onclick="window.location.href='mailto:dkhilnani@gmail.com?subject=New Xyla Pre-order Request&body=Hi,%0D%0A%0D%0AI\'m interested in pre-ordering Xyla.%0D%0A%0D%0AThanks!'">→ pre-order</button>
+                </div>
             </div>            
             
-            <p class="contact-text">Want to chat? contact → <a href="mailto:founders@xyla.space">founders @ xyla.space</a></p>
+            <p class="contact-text">Want to chat? contact → <a href="mailto:dkhilnani@gmail.com">dkhilnani @ gmail.com</a></p>
         </div>
     </div>
 
@@ -816,6 +859,7 @@
             const benefitsSection = document.getElementById('benefitsSection');
             const benefitsIntro = document.querySelector('.benefits-intro');
             const benefitItems = document.querySelectorAll('.benefit-item');
+            const benefitsSummary = document.querySelector('.benefits-summary');
             const teamSection = document.getElementById('teamSection');
             const teamText = document.querySelector('.team-text');
             const typewriterText = document.getElementById('typewriterText');
@@ -1078,6 +1122,16 @@
                         }
                     });
 
+                    // Animate benefits summary (appears after all items)
+                    const summaryStart = 0.15 + benefitItems.length * 0.12 + 0.1;
+                    if (scrollProgress > summaryStart) {
+                        benefitsSummary.style.opacity = '1';
+                        benefitsSummary.style.transform = 'translateY(0)';
+                    } else {
+                        benefitsSummary.style.opacity = '0';
+                        benefitsSummary.style.transform = 'translateY(20px)';
+                    }
+
                     // Transition to team section
                     if (isScrollingDown && scrollProgress >= 1) {
                         currentSection = 'team';
@@ -1148,6 +1202,8 @@
                     item.style.opacity = '0';
                     item.style.transform = 'translateY(20px)';
                 });
+                benefitsSummary.style.opacity = '0';
+                benefitsSummary.style.transform = 'translateY(20px)';
             }
             
             function resetTeam(nextSection) {
